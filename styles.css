@@ -1,0 +1,209 @@
+/* Estilos gerais para a página */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    /* Removido display: flex e align-items */
+    overflow-x: hidden; /* Para evitar rolagem horizontal desnecessária */
+}
+.barra-pesquisa {
+    width: 100%; /* Ajusta a largura da barra */
+    max-width: 900px; /* Limita a largura máxima */
+    height: 40px; /* Define a altura */
+    margin: 10px auto; /* Centraliza horizontalmente e adiciona margem */
+    padding: 0 40px; /* Espaçamento interno nas laterais, aumentando o espaço para a lupa */
+    border-radius: 20px; /* Arredonda as bordas */
+    border: 1px solid #ccc; /* Borda simples */
+    background-color: #fff; /* Cor de fundo branca */
+    display: flex; /* Usa Flexbox para alinhamento */
+    align-items: center; /* Alinha verticalmente ao centro */
+    position: relative; /* Necessário para posicionar a lupa */
+}
+
+.barra-pesquisa input {
+    width: 100%; /* Ocupar 100% da largura */
+    height: 100%; /* Ocupar 100% da altura */
+    border: none; /* Remove a borda padrão do input */
+    outline: none; /* Remove o contorno ao clicar */
+    font-size: 16px; /* Ajusta o tamanho da fonte */
+}
+
+.barra-pesquisa::before {
+    content: '\1F50D'; /* Código Unicode para o ícone de lupa */
+    position: absolute; /* Posiciona a lupa em relação à barra */
+    left: 10px; /* Distância do lado esquerdo */
+    font-size: 20px; /* Tamanho do ícone */
+    color: #aaa; /* Cor do ícone */
+}
+
+/* Centralizando e ajustando o layout da classe panfletos */
+.panfletos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 colunas por padrão */
+    grid-gap: 20px; /* Espaçamento entre os panfletos */
+    justify-content: center; /* Centraliza os panfletos horizontalmente */
+    padding: 20px; /* Espaçamento interno para o container */
+}
+
+/* Permitir a rolagem no panfleto_armario */
+.panfleto_armario {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas de tamanho igual */
+    grid-gap: 10px; /* Espaçamento entre as imagens */
+    width: 90%;
+    max-width: 1200px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #ffeb3b 0%, #ff9800 100%);
+}
+
+
+
+/* Estilos das imagens dentro do panfleto */
+.panfleto_armario img {
+    width: 100%; /* Ocupa toda a coluna */
+    height: auto; /* Mantém a proporção */
+    object-fit: cover; /* Ajusta a imagem conforme necessário */
+}
+
+
+
+
+
+
+
+/* Estilos individuais para os produtos */
+.produto {
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Nome do produto */
+.nome_produto {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centraliza o texto horizontalmente */
+    color: #ffffff;
+    font-size: 1.9vw; /* Tamanho responsivo */
+    font-family: 'Arial';
+    text-shadow: -2px 0 1px #000;
+    z-index: 2;
+    white-space: nowrap; /* Evita quebra de linha */
+}
+
+/* Preço do produto */
+.preco_produto {
+    position: absolute;
+    bottom: 10%;
+    left: 70%;
+    transform: translate(-50%, 50%); /* Centraliza o texto horizontalmente */
+    color: #fff700;
+    background-color: #7c9afd;
+    clip-path: polygon(0 0, 100% 10%, 100% 100%, 0 100%);
+    font-family: 'Arial';
+    text-shadow: -2px 0 2px #000;
+    border: 1px solid #000000;
+    border-radius: 8px;
+    padding: 10px;
+    z-index: 2;
+    font-size: 1.5vw; /* Tamanho responsivo */
+    word-spacing: 3px;
+}
+
+/* Efeito hover no preço */
+.preco_produto:hover {
+    background-color: #0385ff;
+}
+
+
+
+.painel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    z-index: 1000;
+    display: none;
+    
+}
+
+.fechar {
+    cursor: pointer;
+    float: right;
+    font-size: 20px;
+}
+
+.painel-lista {
+    position: fixed;
+    width: 100%; /* Ajusta a largura da barra */
+    max-width: 90px; /* Limita a largura máxima */
+    margin-top: 20px;
+    right: 10px;
+    top: 20px;
+    padding: 0 10px; /* Espaçamento interno nas laterais */
+    border-radius: 20px; /* Arredonda as bordas */
+    border: 1px solid #ccc; /* Borda simples */
+    background-color: #f9f9f9;
+    display: flex; /* Usa Flexbox para alinhamento */
+    align-items: center;
+    
+}
+
+
+
+.botao-adicionar {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.botao-adicionar:hover {
+    background-color: #45a049;
+}
+
+.remove-item {
+    background-color: rgb(113, 177, 255);
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.botao-finalizar {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-item:hover {
+    background-color: darkred;
+}
+
+.quantity-controls {
+    margin: 10px 0;
+}
+
+.quantity {
+    margin: 0 10px;
+}
+/* Painel do Carrinho */
+#painel-carrinho .painel-conteudo {
+    max-height: 400px; /* Defina uma altura máxima desejada */
+    overflow-y: auto; /* Permite rolagem vertical quando o conteúdo excede a altura */
+    padding: 20px; /* Adicione algum preenchimento para o conteúdo */
+    background-color: #fff; /* Defina a cor de fundo */
+    border-radius: 8px; /* Adicione bordas arredondadas */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+}

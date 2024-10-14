@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panfleto</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="barra-pesquisa">
+        <input type="text" id="pesquisa" placeholder="O que procura??">
+    </div>
+    <div class="panfletos">
+
+        <div class="panfleto_armario">
+            <div class="produto" onclick="abrirPainel('AMORR', 3.79)">
+                <img src="imagens/amor.png" alt="Imagem 1">
+                <p class="nome_produto">AMORR</p>
+                <p class="preco_produto">R$ 3,79</p>
+            </div>
+            <div class="produto" onclick="abrirPainel('S3ko', 4.50)">
+                <img src="imagens/amor.png" alt="Imagem 2">
+                <p class="nome_produto">S3ko</p>
+                <p class="preco_produto">R$ 4,50</p>
+            </div>
+        </div>
+
+        <div class="panfleto_armario">
+            <div class="produto" onclick="abrirPainel('DESASTRE', 3.79)">
+                <img src="imagens/amor.png" alt="Imagem 1">
+                <p class="nome_produto">DESASTRE</p>
+                <p class="preco_produto">R$ 3,79</p>
+            </div>
+            <div class="produto" onclick="abrirPainel('PALPEBRAS', 4.50)">
+                <img src="imagens/amor.png" alt="Imagem 2">
+                <p class="nome_produto">PALPEBRAS</p>
+                <p class="preco_produto">R$ 4,50</p>
+            </div>
+        </div>
+
+        <div class="panfleto_armario">
+            <div class="produto" onclick="abrirPainel('DUVIDAS', 3.79)">
+                <img src="imagens/amor.png" alt="Imagem 1">
+                <p class="nome_produto">DUVIDAS</p>
+                <p class="preco_produto">R$ 3,79</p>
+            </div>
+            <div class="produto" onclick="abrirPainel('CARINHO', 4.50)">
+                <img src="imagens/amor.png" alt="Imagem 2">
+                <p class="nome_produto">CARINHO</p>
+                <p class="preco_produto">R$ 4,50</p>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+    <!-- Painel do Produto -->
+    <div id="painel" class="painel">
+        <div class="painel-conteudo">
+            <span class="fechar" onclick="fecharPainel()">&times;</span>
+            <h2 id="produtoNome"></h2>
+            <p id="produtoPreco"></p>
+
+            <!-- Controles de Quantidade -->
+            <div class="quantity-controls">
+                <button class="quantity-decrease" onclick="alterarQuantidade(-1)">-</button>
+                <span class="quantity" id="quantidade" data-quantity="1">1</span>
+                <button class="quantity-increase" onclick="alterarQuantidade(1)">+</button>
+            </div>
+
+            <!-- Exibição do Preço Total -->
+            <p>Preço Total: R$ <span id="precoTotal">0.00</span></p>
+
+            <!-- Botão para adicionar ao carrinho -->
+            <div class="carrinho-container">
+                <button class="botao-adicionar" onclick="adicionarAoCarrinho()">Adicionar ao Carrinho</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção do Carrinho -->
+    <div id="painel-lista" class="painel-lista" onclick="abrirPainelCarrinho()">
+        <h2>Itens no Carrinho</h2>
+        <!-- Itens serão adicionados aqui dinamicamente -->
+    </div>
+
+    <!-- Painel do Carrinho -->
+    <div id="painel-carrinho" class="painel" style="display: none;">
+        <div class="painel-conteudo">
+            <span class="fechar" onclick="fecharPainelCarrinho()">&times;</span>
+            <button class="botao-finalizar" onclick="finalizarCompra()">Finalizar</button>
+            <h2>Produtos Adicionados</h2>
+            <div id="listaProdutos"></div>
+        </div>
+    </div>
+
+    <script>
+        let precoProduto = 0;
+        const produtosCarrinho = [];
+
+        // Função para abrir o painel com os detalhes do produto
+        function abrirPainel(nome, preco) {
+            precoProduto = preco;
+            document.getElementById('painel').style.display = 'block';
+            document.getElementById('produtoNome').textContent = nome;
+            document.getElementById('produtoPreco').textContent = `Preço Unitário: R$ ${preco.toFixed(2)}`;
+            atualizarPrecoTotal();
+        }
+
+        // Função para fechar o painel do produto
+        function fecharPainel() {
+            document.getElementById('painel').style.display = 'none';
+        }
+
+        // Função para alterar a quantidade e atualizar o preço total
+        function alterarQuantidade(valor) {
+            const quantidadeSpan = document.getElementById('quantidade');
+            let quantidadeAtual = parseInt(quantidadeSpan.getAttribute('data-quantity'), 10);
+
+            if (quantidadeAtual + valor >= 1) {
+                quantidadeAtual += valor;
+                quantidadeSpan.setAttribute('data-quantity', quantidadeAtual);
+                quantidadeSpan.textContent = quantidadeAtual;
+                atualizarPrecoTotal();
+            }
+        }
+
+        // Função para calcular e exibir o preço total
+        function atualizarPrecoTotal() {
+            const quantidadeAtual = parseInt(document.getElementById('quantidade').getAttribute('data-quantity'), 10);
+            const precoTotal = quantidadeAtual * precoProduto;
+            document.getElementById('precoTotal').textContent = precoTotal.toFixed(2);
+        }
+
+        // Função para adicionar item ao carrinho
+        function adicionarAoCarrinho() {
+            const nomeProduto = document.getElementById('produtoNome').textContent;
+            const quantidade = parseInt(document.getElementById('quantidade').getAttribute('data-quantity'), 10);
+            const precoTotal = parseFloat(document.getElementById('precoTotal').textContent);
+
+            const item = {
+                nome: nomeProduto,
+                preco: precoProduto,
+                quantidade: quantidade
+            };
+
+            produtosCarrinho.push(item);
+            atualizarListaCarrinho();
+            fecharPainel();
+        }
+
+        // Função para abrir o painel do carrinho
+        function abrirPainelCarrinho() {
+            document.getElementById('painel-carrinho').style.display = 'block';
+            atualizarListaCarrinho();
+        }
+
+        // Função para fechar o painel do carrinho
+        function fecharPainelCarrinho() {
+            document.getElementById('painel-carrinho').style.display = 'none';
+        }
+
+
+
+        // Função para atualizar a lista de produtos no carrinho
+        function atualizarListaCarrinho() {
+            const listaProdutos = document.getElementById("listaProdutos");
+            listaProdutos.innerHTML = ''; // Limpa a lista antes de atualizar
+
+            produtosCarrinho.forEach((produto, index) => {
+                const novoItem = document.createElement("div");
+                novoItem.classList.add("item-carrinho");
+
+                novoItem.innerHTML = `
+                    <p><strong>Nome:</strong> ${produto.nome}</p>
+                    <p><strong>Quantidade:</strong> ${produto.quantidade}</p>
+                    <p><strong>Preço Total:</strong> R$${(produto.preco * produto.quantidade).toFixed(2)}</p>
+                    <button class="remove-item" onclick="removerItemCarrinho(${index})">Remover</button>
+                `;
+
+                listaProdutos.appendChild(novoItem);
+            });
+        }
+
+        // Função para remover item do carrinho
+        function removerItemCarrinho(index) {
+            produtosCarrinho.splice(index, 1); // Remove o item do array
+            atualizarListaCarrinho(); // Atualiza a exibição
+        }
+
+
+
+        document.getElementById('pesquisa').addEventListener('keyup', function() {
+            const termoPesquisa = this.value.toLowerCase();
+            const produtos = document.querySelectorAll('.produto');
+
+            produtos.forEach(function(produto) {
+                const nomeProduto = produto.querySelector('.nome_produto').textContent.toLowerCase();
+                if (nomeProduto.includes(termoPesquisa)) {
+                    produto.style.display = ''; // Exibe o produto
+                } else {
+                    produto.style.display = 'none'; // Oculta o produto
+                }
+            });
+        });
+
+
+        const mercados = [
+    { id_mercado: 1, nome: "Mercado OBA", localizacao: "Rua 1" },
+    { id_mercado: 2, nome: "Mercado PAMELA", localizacao: "Rua 2" },
+];
+
+// Lista de produtos disponíveis
+const produtos = [
+    { id_produto: 1, nome: "AMORR", preco: 300.50, id_mercado: 1 },
+    { id_produto: 2, nome: "S3ko", preco: 4.00, id_mercado: 1 },
+    { id_produto: 3, nome: "DESASTRE", preco: 3.75, id_mercado: 1 },
+    { id_produto: 4, nome: "PALPEBRAS", preco: 4.50, id_mercado: 1 },
+    { id_produto: 1, nome: "AMORR", preco: 12, id_mercado: 2 },
+    { id_produto: 2, nome: "S3ko", preco: 1.00, id_mercado: 2 },
+    { id_produto: 3, nome: "DESASTRE", preco: 30.75, id_mercado: 2 },
+    { id_produto: 4, nome: "PALPEBRAS", preco: 41.50, id_mercado: 2 }
+];
+
+
+function finalizarCompra() {
+    let detalhesCompra = "Produtos no carrinho:\n";
+    let mercadoMaisBarato = null;
+    let menorPrecoTotal = Infinity; // Inicia com um valor alto
+
+    // Itera pelos produtos no carrinho
+    produtosCarrinho.forEach(produto => {
+        detalhesCompra += `Nome: ${produto.nome}, Quantidade: ${produto.quantidade}\n`;
+
+        // Encontra o produto correspondente na lista de produtos
+        const produtoInfo = produtos.find(p => p.nome === produto.nome);
+        
+        if (produtoInfo) {
+            // Verifica todos os mercados para encontrar o menor preço considerando a quantidade
+            mercados.forEach(mercado => {
+                const produtoMercado = produtos.find(p => p.id_mercado === mercado.id_mercado && p.nome === produto.nome);
+                
+                if (produtoMercado) {
+                    const precoTotalProduto = produtoMercado.preco * produto.quantidade; // Preço total considerando a quantidade
+
+                    // Atualiza o menor preço e o mercado correspondente
+                    if (precoTotalProduto < menorPrecoTotal) {
+                        menorPrecoTotal = precoTotalProduto;
+                        mercadoMaisBarato = mercado;
+                    }
+                }
+            });
+        }
+    });
+
+    // Exibe o mercado mais barato ou uma mensagem padrão
+    if (mercadoMaisBarato) {
+        detalhesCompra += `\nO mercado mais barato é ${mercadoMaisBarato.nome} na ${mercadoMaisBarato.localizacao}, com o preço total de R$ ${menorPrecoTotal.toFixed(2)}.`;
+    } else {
+        detalhesCompra += `\nNenhum produto encontrado nos mercados disponíveis.`;
+    }
+
+    alert(detalhesCompra);
+}
+
+// Chamando a função para finalizar a compra
+finalizarCompra();
+    </script>
+</body>
+</html>
